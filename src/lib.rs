@@ -30,7 +30,7 @@ impl Blog {
             .build(manager)
             .expect("Failed to create pool");
 
-        println!("Starting http server: 127.0.0.1", self.port);
+        println!("Starting http server: 127.0.0.1:{}", self.port);
         HttpServer::new(move || {
             App::new()
                 .data(pool.clone())
