@@ -31,5 +31,16 @@ pub enum UserKey<'a> {
 
 
 pub fn find_user<'a>(conn: &SqliteConnection, key: UserKey<'a>) -> Result<User> {
-
+    match key {
+        UserKey::Username(name) => users::table
+            .filter(users::username.eq(name))
+            .select((users::id, users::username))
+            .first::<User>(conn)
+            .map_err(AppError::from),
+        UserKey::ID(id) =>users::table
+            .find(id)
+            .select((users::id, users::username))
+            .first::<User>(conn)
+            .map_err(Into::into),
+    }
 }
